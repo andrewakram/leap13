@@ -31,25 +31,38 @@ class Controller extends BaseController
         $decodedData = json_decode($data);
         //dd($decodedData->tracks);
         $login_flag=$decodedData->login;
-
+        $login_flag==false ? $login_flag="failed" :$login_flag;
+        if($login_flag == 'successful'){
+            Session::put('user','successful');
+        }else{
+            Session::put('user','failed');
+        }
         return response($login_flag);
     }
 
     public function loadTracks(){
-        $i=0;
-        $url = "https://api.jsonbin.io/b/5eafd4ca47a2266b1472794c";
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        $data = curl_exec($ch);
-        //dd($data);
-        curl_close($ch);
-        $decodedData = json_decode($data);
-        //dd($decodedData->tracks);
-        $tracks=$decodedData->tracks;
+        $login_check = Session::get('user');
+        if(isset($login_check) && $login_check == 'successful'){
+            $i=0;
+            $url = "https://api.jsonbin.io/b/5eafd4ca47a2266b1472794c";
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            $data = curl_exec($ch);
+            //dd($data);
+            curl_close($ch);
+            $decodedData = json_decode($data);
+            //dd($decodedData->tracks);
+            $tracks=$decodedData->tracks;
 
-        return response($tracks);
+            return response($tracks);
+        }else{
+            return response('failed');
+        }
+
+
+
     }
 
     public function downloadTrack(Request $request){

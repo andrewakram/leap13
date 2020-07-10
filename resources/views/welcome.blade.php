@@ -99,7 +99,7 @@
             <div class="content">
                 <br>
                 <input name="user" id="user">
-                <input name="pass" id="pass">
+                <input name="pass" id="pass" type="password">
                 <button id="login" class="btn btn-success">login</button>
 
                 <br>
@@ -207,13 +207,13 @@
                 type:"get",
                 url:"{{url('/load-tracks')}}",
                 success:function(result){
-                    if(result){
+                    if(result !='failed'){
                         $('#myTable').empty();
                         loadData(result);
                         console.log(result);
                     }else{
 
-                        console.log("Error");
+                        alert('Sorry,You must login first!')
                     }
                 }
             });
