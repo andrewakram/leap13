@@ -16,5 +16,7 @@ Route::get('/welcome', function () {
 });
 
 Route::get('/',"Controller@index");
+
+Route::post('/login-user', 'Controller@loginUser')->name('logi-user');
 Route::get('/load-tracks',"Controller@loadTracks");
 Route::get('/download-track',"Controller@downloadTrack");

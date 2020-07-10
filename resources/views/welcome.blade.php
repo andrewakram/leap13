@@ -80,7 +80,7 @@
         <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     </head>
     <body>
-    <button id="load" class="btn btn-success">load tracks</button>
+
         <div class="flex-center position-ref full-height">
             @if (Route::has('login'))
                 <div class="top-right links">
@@ -97,6 +97,15 @@
             @endif
 
             <div class="content">
+                <br>
+                <input name="user" id="user">
+                <input name="pass" id="pass">
+                <button id="login" class="btn btn-success">login</button>
+
+                <br>
+                <button id="load" class="btn btn-success">load tracks</button>
+                <br>
+
 
                 <div class="box-body scrollit">
                     <table id="example2" class="table table-bordered table-hover">
@@ -105,7 +114,7 @@
                             <th><b>#</b></th>
                             <th><b>Name </b></th>
                             <th><b>Length</b></th>
-                            <th><b>Artist</b></th>
+                             <th><b>Artist</b></th>
                             <th><b>Music</b></th>
 
                             <th><b>Download</b></th>
@@ -165,7 +174,33 @@
 
 <script>
     $(document).ready(function(){
-        $('#exampleModal').modal('show');
+        //start login
+        $('#login').on('click',function(){
+            var user=$('#user').val();
+            var pass=$('#pass').val();
+            $.ajax({
+                type:"post",
+                url: "{{route('logi-user')}}",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data:{user:user,pass:pass,"_token": "{{ csrf_token() }}",},
+                success:function(res){
+                    console.log(res);
+                    if(res === 'successful'){
+                        alert('logged in success')
+                    }else{
+                        alert('logged in failed')
+                    }
+
+                }
+            });
+        });
+
+
+        //end login
+
+
         //start loading tracks
         $('#load').on('click',function(){
             $.ajax({
@@ -229,7 +264,7 @@
                 '                                    </audio>\n' +
                 '                                </th>\n' +
                 '                                \n' +
-                '                                <th><a  " href="'+audio+'" class="btn btn-danger audio">Download</a></th>\n' +
+                '                                <th><a target="_blank " href="'+audio+'" class="btn btn-danger audio">Download</a></th>\n' +
                 '\n' +
                 '                            </tr>';
             $('#myTable').append(tracks);

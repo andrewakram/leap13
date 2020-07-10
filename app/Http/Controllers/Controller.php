@@ -17,6 +17,24 @@ class Controller extends BaseController
         return view('welcome');
     }
 
+    public function loginUser(Request $request){
+        $user=$request->user;
+        $pass=$request->pass;
+        $url = "https://nilepromotion.com/pa-test/wp-json/test/v2/creds?%20username=$user&password=$pass";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        $data = curl_exec($ch);
+        //dd($data);
+        curl_close($ch);
+        $decodedData = json_decode($data);
+        //dd($decodedData->tracks);
+        $login_flag=$decodedData->login;
+
+        return response($login_flag);
+    }
+
     public function loadTracks(){
         $i=0;
         $url = "https://api.jsonbin.io/b/5eafd4ca47a2266b1472794c";
