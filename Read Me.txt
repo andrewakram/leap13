@@ -1,0 +1,5 @@
+you can run it on your local computer
+-clone the repository in 'htdocs' folder of 'xampp'
+-you need to install composer
+
+-then, write the url path (http://localhost/leap13/public) in youe browser
